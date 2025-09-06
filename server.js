@@ -1,12 +1,13 @@
 import express from "express";
-import bodyParser from "body-parser";
 import twilio from "twilio";
 import fs from "fs";
 import path from "path";
 
-const VoiceResponse = twilio.twiml.VoiceResponse;
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+// Twilio envia application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: false }));
+
+const { VoiceResponse } = twilio.twiml;
 
 const knowledgePath = path.join(process.cwd(), "data", "knowledge.json");
 let COMPANY = {};
@@ -17,6 +18,11 @@ try {
   COMPANY = {};
 }
 
+/** Health check (Render) */
+app.get("/", (req, res) => res.type("text/plain").send("ok"));
+app.get("/healthz", (req, res) => res.type("text/plain").send("ok"));
+
+/** Webhooks Twilio */
 app.post("/twilio/voice", (req, res) => {
   const vr = new VoiceResponse();
   const gather = vr.gather({ input: "dtmf", numDigits: 1, action: "/twilio/ivr" });
@@ -33,10 +39,7 @@ app.post("/twilio/ivr", (req, res) => {
   const digits = (req.body.Digits || "").trim();
   const vr = new VoiceResponse();
   const say = (msg) =>
-    vr.say(
-      msg +
-        " Press 0 to speak to a representative, or stay on the line to repeat."
-    );
+    vr.say(msg + " Press 0 to speak to a representative, or stay on the line to repeat.");
 
   switch (digits) {
     case "1":
