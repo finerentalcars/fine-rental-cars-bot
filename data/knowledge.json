@@ -1,0 +1,16 @@
+{
+  "company_name": "Fine Rental Cars",
+  "hq_city": "Prosper",
+  "hq_state": "TX",
+  "service_area": "Dallas\u2013Fort Worth (DFW)",
+  "company_phone": "19725650052",
+  "company_email": "support@finerentalcars.com",
+  "policies": {
+    "delivery_radius_miles": 25,
+    "delivery_fee": "Quote required",
+    "miles_included_per_day": 200,
+    "overage_policy": "Per-mile charge applies (quote required)",
+    "turnover_buffer_hours": 3,
+    "handoff": "Lockbox contactless when applicable"
+  }
+}
