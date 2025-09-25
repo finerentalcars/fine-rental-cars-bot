@@ -78,3 +78,16 @@ app.post("/twilio/voicemail", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Fine Rental Cars bot running on ${PORT}`));
+/** Webhook for SMS */
+app.post("/twilio/sms", (req, res) => {
+  const from = req.body.From;
+  const body = req.body.Body;
+
+  console.log("📩 SMS received from:", from, "->", body);
+
+  // Automatic reply in English
+  const twiml = new twilio.twiml.MessagingResponse();
+  twiml.message("Thank you for contacting Fine Rental Cars! 🚗 We will get back to you shortly.");
+
+  res.type("text/xml").send(twiml.toString());
+});
